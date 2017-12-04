@@ -22,6 +22,9 @@ window.RTCMultiConnection = function(roomid, forceOptions) {
         parameters += '&msgEvent=' + connection.socketMessageEvent;
         parameters += '&socketCustomEvent=' + connection.socketCustomEvent;
         parameters += '&autoCloseEntireSession=' + !!connection.autoCloseEntireSession;
+        parameters += '&token=' + connection.extra.token;
+        parameters += '&type=' + connection.extra.type;
+        parameters += '&environment=' + connection.extra.environment;
 
         if (connection.session.broadcast === true) {
             parameters += '&oneToMany=true';

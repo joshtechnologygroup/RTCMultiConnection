@@ -9,6 +9,8 @@
 // stores all sockets, user-ids, extra-data and connected sockets
 // you can check presence as following:
 // var isRoomExist = listOfUsers['room-id'] != null;
+var helper = require('./helper');
+
 var listOfUsers = {};
 
 var shiftedModerationControls = {};
@@ -41,6 +43,11 @@ module.exports = exports = function(app, socketCallback) {
 
             io.sockets.on('connection', onConnection);
         }
+
+        // io.set('authorization', function (handshakeData, callback) {
+        //     var token = handshakeData._query.token;
+        //     checkAuthToken(token, callback);
+        // });
     }
     else {
         onConnection(app);
@@ -85,6 +92,17 @@ module.exports = exports = function(app, socketCallback) {
 
         var sessionid = params.sessionid;
         var autoCloseEntireSession = params.autoCloseEntireSession;
+
+        var token = params.token;
+        var type = params.type;
+        var environment = params.environment;
+
+        checkAuthToken(token, sessionid, type, environment, function (error, authenticated) {
+            if (error || !authenticated) {
+                throw new Error("authentication failed");
+            }
+            console.log("authentication success");
+        });
 
         if (params.enableScalableBroadcast) {
             if (!ScalableBroadcast) {
@@ -565,5 +583,14 @@ function searchCache(jsonFile, callback) {
 
             callback(mod);
         })(mod);
+    }
+}
+
+function checkAuthToken(token, roomId, type, environment, callback) {
+    if(token !== undefined && token !== 'undefined') {
+        helper.makeAuthApiCall(token, roomId, type, environment, callback);
+    }
+    else {
+        callback(new Error("Invalid token"), false);
     }
 }
