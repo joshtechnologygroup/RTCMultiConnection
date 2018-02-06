@@ -20,8 +20,9 @@ var path = require('path');
 // see how to use a valid certificate:
 // https://github.com/muaz-khan/WebRTC-Experiment/issues/62
 var options = {
-    key: fs.readFileSync(path.join(__dirname, resolveURL('fake-keys/privatekey.pem'))),
-    cert: fs.readFileSync(path.join(__dirname, resolveURL('fake-keys/certificate.pem')))
+    key: fs.readFileSync('/etc/cert/calyx.key'),
+    cert: fs.readFileSync('/etc/cert/STAR_calyxpod_com.crt'),
+    ca: fs.readFileSync('/etc/cert/STAR_calyxpod_com.ca-bundle')
 };
 
 // force auto reboot on failures
