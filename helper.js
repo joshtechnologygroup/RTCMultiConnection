@@ -11,16 +11,16 @@ var path = "v3/api/validate-user-for-video-call/";
 
 var helper = {
 
-    makeAuthApiCall: function(token, roomId, userType, environment, callback) {
+    makeAuthApiCall: function(token, roomId, userType, environment, socket, callback) {
         var baseUrl = ENVIRONMENT_URL_DICT[environment];
         request(
             baseUrl + path + "?room_id=" + roomId + "&user_token=" + token + "&user_type=" + userType,
             function (error, response, body) {
-                if (error === null || error === undefined) {
-                    return callback(new Error("Invalid token"), false);
+                if (error !== null && error !== undefined) {
+                    return callback(new Error(error.toString()), false, socket);
                 }
 
-                return callback(undefined, !!(response && response.statusCode === 200));
+                return callback(undefined, response && response.statusCode === 200, socket);
             });
     }
 
