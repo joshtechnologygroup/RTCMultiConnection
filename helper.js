@@ -7,7 +7,7 @@ var ENVIRONMENT_URL_DICT = {
     "prod": "https://api.calyxpod.com/"
 };
 
-var path = "v3/api/recruitments/validate-user-for-video-call/";
+var path = "v3/api/company/validate-user-for-video-call/";
 
 var helper = {
 
